@@ -105,6 +105,20 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .score-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;font-weight:700;margin-right:4px;}
 .footer{background:var(--ink);color:rgba(255,255,255,.28);text-align:center;padding:18px;font-size:12px;letter-spacing:.04em;}
 .footer span{color:var(--gold);font-weight:500;}
+.photo-card.upl{position:relative;overflow:hidden;cursor:pointer;min-height:150px;justify-content:center;transition:border-color .15s;}
+.photo-card.upl:hover{border-color:var(--gold);}
+.ph-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;}
+.ph-prev{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+.ph-add{font-size:11px;font-weight:600;color:var(--gold-dark);letter-spacing:.04em;margin-top:2px;}
+.ph-remove{display:none;position:absolute;left:8px;right:8px;bottom:8px;background:rgba(17,17,17,.78);color:#fff;border:none;border-radius:6px;padding:7px 0;font-size:11px;font-weight:600;cursor:pointer;}
+.photo-card.has{border-style:solid;border-color:var(--gold);}
+.photo-card.has .ph-prev,.photo-card.has .ph-remove{display:block;}
+.photo-card.has .photo-icon,.photo-card.has .photo-lbl,.photo-card.has .photo-note,.photo-card.has .ph-add{visibility:hidden;}
+.ph-privacy{font-size:12px;color:var(--soft);line-height:1.6;margin-top:2px;}
+.ph-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 6px;}
+.ph-thumb{display:block;aspect-ratio:3/4;border-radius:8px;border:1px solid var(--rule);background:var(--gold-faint) center/cover no-repeat;position:relative;text-decoration:none;}
+.ph-thumb span{position:absolute;left:6px;bottom:6px;background:rgba(17,17,17,.72);color:#fff;font-size:10px;font-weight:600;padding:3px 7px;border-radius:5px;letter-spacing:.04em;}
+.photo-status{font-size:13px;color:var(--mid);line-height:1.6;}
 @media(max-width:580px){.row{grid-template-columns:1fr;}.photo-grid{grid-template-columns:1fr 1fr;}.scale-btn{width:34px;height:34px;font-size:12px;}.rating-btn{min-width:38px;height:38px;}}
 </style>
 </head>
@@ -114,10 +128,10 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <div class="hdr-eye">Online Coaching · Ziad Elfeky</div>
   <h1 id="hdr-title">Monthly Check-In</h1>
   <div class="hdr-sub">Progress is built in the details.</div>
-  <div class="hdr-desc" id="hdr-desc">Honest answers only. This takes 2 minutes and directly shapes your next program block.</div>
+  <div class="hdr-desc" id="hdr-desc">Honest answers only. This takes about 5 minutes and directly shapes your next program block.</div>
 </div>
 
-<div class="nav">
+<div class="nav" id="nav" style="display:none">
   <div class="nav-inner">
     <button class="nav-btn active" id="nav-form" onclick="showView('form')">Check-In Form</button>
     <button class="nav-btn" id="nav-dash" onclick="showView('dashboard')">Coach Dashboard</button>
@@ -256,23 +270,36 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <div class="sec">
     <div class="sec-hdr"><span class="sec-num">07</span><span class="sec-title">Progress Photos</span></div>
     <div class="note">
-      <strong>Send photos to WhatsApp after submitting.</strong> Same conditions every month — first thing in the morning, before eating, same spot and lighting. Stand relaxed, arms slightly away from sides.<br><br>
+      <strong>Upload them here</strong>, or send them on WhatsApp if you prefer. Same conditions every month: first thing in the morning, before eating, same spot and lighting. Stand relaxed, arms slightly away from sides.<br><br>
       <strong>Males:</strong> Shorts only, no shirt. &nbsp;&nbsp;<strong>Females:</strong> Sports bra + shorts or fitted top + leggings.
     </div>
     <div class="photo-grid">
-      <div class="photo-card">
+      <label class="photo-card upl" id="pc-front" for="ph-front">
+        <input type="file" id="ph-front" class="ph-input" accept="image/*">
+        <img class="ph-prev" id="pv-front" alt="">
         <div class="photo-icon"><svg width="18" height="18" fill="none" stroke="#b8966a" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 14c-5 0-8 2-8 4v2h16v-2c0-2-3-4-8-4z"/></svg></div>
         <div class="photo-lbl">Front</div><div class="photo-note">Facing camera, arms slightly out</div>
-      </div>
-      <div class="photo-card">
+        <span class="ph-add">Add photo</span>
+        <button type="button" class="ph-remove" onclick="removePhoto('front', event)">Remove</button>
+      </label>
+      <label class="photo-card upl" id="pc-back" for="ph-back">
+        <input type="file" id="ph-back" class="ph-input" accept="image/*">
+        <img class="ph-prev" id="pv-back" alt="">
         <div class="photo-icon"><svg width="18" height="18" fill="none" stroke="#b8966a" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 14c-5 0-8 2-8 4v2h16v-2c0-2-3-4-8-4z"/></svg></div>
         <div class="photo-lbl">Back</div><div class="photo-note">Facing away, relaxed</div>
-      </div>
-      <div class="photo-card">
+        <span class="ph-add">Add photo</span>
+        <button type="button" class="ph-remove" onclick="removePhoto('back', event)">Remove</button>
+      </label>
+      <label class="photo-card upl" id="pc-side" for="ph-side">
+        <input type="file" id="ph-side" class="ph-input" accept="image/*">
+        <img class="ph-prev" id="pv-side" alt="">
         <div class="photo-icon"><svg width="18" height="18" fill="none" stroke="#b8966a" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 14c-5 0-8 2-8 4v2h16v-2c0-2-3-4-8-4z"/></svg></div>
-        <div class="photo-lbl">Side — Right</div><div class="photo-note">Profile, arms down</div>
-      </div>
+        <div class="photo-lbl">Side · Right</div><div class="photo-note">Profile, arms down</div>
+        <span class="ph-add">Add photo</span>
+        <button type="button" class="ph-remove" onclick="removePhoto('side', event)">Remove</button>
+      </label>
     </div>
+    <div class="ph-privacy">Stored privately. Only I can see them, and they are never shared or posted without your written permission.</div>
   </div>
 
   <!-- 08 OVERALL -->
@@ -304,7 +331,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <div class="submit-wrap">
     <div id="submit-err" class="err-banner" style="display:none">Please fill in all required fields.</div>
     <button class="btn-primary" id="submit-btn" onclick="handleSubmit()">Submit Check-In</button>
-    <span class="submit-note">Then send your 3 progress photos via WhatsApp</span>
+    <span class="submit-note">Didn't upload photos? Send them on WhatsApp after submitting.</span>
   </div>
 </div>
 </div>
@@ -314,11 +341,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <div class="success-wrap">
     <div class="success-icon"><svg width="28" height="28" fill="none" stroke="#2d6a4f" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="success-title" id="success-title">Check-in received.</div>
-    <div class="success-body">Your monthly check-in has been logged. Don't forget to send your 3 progress photos via WhatsApp. Your next program block will reflect everything you've shared.</div>
+    <div class="success-body">Your monthly check-in has been logged. Your next program block will reflect everything you've shared.</div>
+    <div class="photo-status" id="photo-status" style="display:none"></div>
     <div class="next-steps">
       <div class="next-tag">Next steps</div>
-      <div class="next-item"><span class="next-num">1.</span>Send front, back & right-side photos via WhatsApp</div>
-      <div class="next-item"><span class="next-num">2.</span>Coach reviews and adjusts your program</div>
+      <div class="next-item"><span class="next-num">1.</span>Photos not uploaded? Send front, back and right side on WhatsApp</div>
+      <div class="next-item"><span class="next-num">2.</span>I review everything and adjust your program</div>
       <div class="next-item"><span class="next-num">3.</span>Keep going</div>
     </div>
     <button onclick="resetForm()" style="font-size:12px;color:var(--soft);background:none;border:none;cursor:pointer;text-decoration:underline;">Submit another check-in</button>
@@ -330,11 +358,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <div id="dash-pin" style="display:none">
     <div class="pin-wrap">
       <div class="pin-title">Coach Access</div>
-      <div class="pin-sub">Enter your PIN to view check-ins.</div>
+      <div class="pin-sub">Sign in with your coach account.</div>
       <div style="width:100%;display:flex;flex-direction:column;gap:10px">
-        <input type="password" id="pin-input" placeholder="PIN" style="text-align:center;font-size:22px;letter-spacing:.3em">
-        <div id="pin-err" style="font-size:12px;color:var(--red);text-align:center;display:none">Incorrect PIN</div>
-        <button class="btn-primary" onclick="checkPin()">Enter</button>
+        <input type="email" id="login-email" placeholder="Email" autocomplete="username">
+        <input type="password" id="login-pass" placeholder="Password" autocomplete="current-password">
+        <div id="pin-err" style="font-size:12px;color:var(--red);text-align:center;display:none">Sign-in failed</div>
+        <button class="btn-primary" id="login-btn" onclick="signIn()">Sign in</button>
       </div>
       <button onclick="showView('form')" style="font-size:12px;color:var(--soft);background:none;border:none;cursor:pointer">Back to form</button>
     </div>
@@ -368,7 +397,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <script>
 var SUPABASE_URL = "https://gndbfxwjcumkftbultkt.supabase.co";
 var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImduZGJmeHdqY3Vta2Z0YnVsdGt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwMzc5NTAsImV4cCI6MjA5NzYxMzk1MH0.LLk6yk3kgyH5INPE60hU1tyAaKNCWF6Sdkoywg3kRjo";
-var COACH_PIN = "1991";
+var accessToken = null;
 var TABLE = "online_checkins";
 var pillState = {};
 var scales = {};
@@ -448,6 +477,7 @@ function showView(v) {
   document.getElementById('nav-form').classList.remove('active');
   document.getElementById('nav-dash').classList.remove('active');
   document.getElementById('view-' + v).style.display = 'block';
+  document.getElementById('nav').style.display = v === 'dashboard' ? 'block' : 'none';
   if (v === 'dashboard') {
     document.getElementById('nav-dash').classList.add('active');
     document.getElementById('hdr-title').textContent = 'Coach Dashboard';
@@ -464,23 +494,58 @@ function showView(v) {
   }
 }
 
-function checkPin() {
-  var val = document.getElementById('pin-input').value;
-  if (val === COACH_PIN) {
-    dashUnlocked = true;
-    document.getElementById('dash-pin').style.display = 'none';
-    loadSubmissions();
-  } else {
+function authHeaders() {
+  return { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + accessToken };
+}
+
+function showLogin(msg) {
+  dashUnlocked = false;
+  accessToken = null;
+  try { sessionStorage.removeItem('ze_coach_token'); } catch (e) {}
+  document.getElementById('dash-list').style.display = 'none';
+  document.getElementById('dash-detail').style.display = 'none';
+  document.getElementById('dash-pin').style.display = 'block';
+  if (msg) {
     var err = document.getElementById('pin-err');
+    err.textContent = msg;
     err.style.display = 'block';
-    setTimeout(function() { err.style.display = 'none'; }, 2000);
   }
 }
 
+function signIn() {
+  var email = document.getElementById('login-email').value.trim();
+  var pass = document.getElementById('login-pass').value;
+  var err = document.getElementById('pin-err');
+  var btn = document.getElementById('login-btn');
+  err.style.display = 'none';
+  if (!email || !pass) { err.textContent = 'Enter your email and password'; err.style.display = 'block'; return; }
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY },
+    body: JSON.stringify({ email: email, password: pass })
+  })
+  .then(function(res) { return res.json().then(function(j) { return { ok: res.ok, j: j }; }); })
+  .then(function(r) {
+    btn.disabled = false; btn.textContent = 'Sign in';
+    if (!r.ok || !r.j.access_token) { err.textContent = 'Sign-in failed. Check your email and password.'; err.style.display = 'block'; return; }
+    accessToken = r.j.access_token;
+    try { sessionStorage.setItem('ze_coach_token', accessToken); } catch (e) {}
+    dashUnlocked = true;
+    document.getElementById('login-pass').value = '';
+    document.getElementById('dash-pin').style.display = 'none';
+    loadSubmissions();
+  })
+  .catch(function(e) {
+    btn.disabled = false; btn.textContent = 'Sign in';
+    err.textContent = 'Network error: ' + e.message; err.style.display = 'block';
+  });
+}
+
 function dashLogout() {
-  dashUnlocked = false;
-  document.getElementById('pin-input').value = '';
+  showLogin();
   showView('form');
+  if (location.hash) history.replaceState(null, '', location.pathname);
 }
 
 function showDashList() {
@@ -493,11 +558,11 @@ function loadSubmissions() {
   showDashList();
   document.getElementById('clients-list').innerHTML = '<div class="loading">Loading…</div>';
   fetch(SUPABASE_URL + '/rest/v1/' + TABLE + '?select=*&order=submitted_at.desc', {
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    headers: authHeaders()
   })
-  .then(function(r) { return r.json(); })
-  .then(function(d) { allSubmissions = d; renderList(); })
-  .catch(function(e) { document.getElementById('clients-list').innerHTML = '<div class="empty-state">Error: ' + e.message + '</div>'; });
+  .then(function(res) { if (res.status === 401 || res.status === 403) { throw new Error('session'); } return res.json(); })
+  .then(function(d) { allSubmissions = Array.isArray(d) ? d : []; renderList(); })
+  .catch(function(e) { if (e.message === 'session') { showLogin('Session expired. Sign in again.'); return; } document.getElementById('clients-list').innerHTML = '<div class="empty-state">Error: ' + e.message + '</div>'; });
 }
 
 function renderList() {
@@ -523,7 +588,7 @@ function showDetail(idx) {
   document.getElementById('dash-list').style.display = 'none';
   document.getElementById('dash-detail').style.display = 'block';
   document.getElementById('detail-delete-btn').onclick = function() {
-    if (confirm('Delete ' + s.name + '\'s check-in?')) { deleteRecord(s.id); }
+    if (confirm('Delete ' + s.name + '\'s check-in?')) { deleteWithPhotos(s.id, s); }
   };
   var rows = [
     ['Name', s.name], ['Month', s.checkin_month],
@@ -548,12 +613,13 @@ function showDetail(idx) {
     }
   });
   document.getElementById('detail-content').innerHTML = html;
+  renderPhotos(s);
 }
 
 function deleteRecord(id) {
   fetch(SUPABASE_URL + '/rest/v1/' + TABLE + '?id=eq.' + id, {
-    method: 'DELETE', headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-  }).then(function() { loadSubmissions(); }).catch(function(e) { alert('Error: ' + e.message); });
+    method: 'DELETE', headers: authHeaders()
+  }).then(function(res) { if (res.status === 401 || res.status === 403) { showLogin('Session expired. Sign in again.'); return; } loadSubmissions(); }).catch(function(e) { alert('Error: ' + e.message); });
 }
 
 function validate() {
@@ -604,10 +670,15 @@ function handleSubmit() {
     other_notes: document.getElementById('f-other').value.trim(),
     submitted_at: new Date().toISOString()
   };
-  fetch(SUPABASE_URL + '/rest/v1/' + TABLE, {
+  if (photoCount()) btn.textContent = 'Uploading photos…';
+  uploadPhotos('checkins').then(function(up) {
+    applyPhotoPaths(data, up);
+    btn.textContent = 'Submitting…';
+    return fetch(SUPABASE_URL + '/rest/v1/' + TABLE, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Prefer': 'return=minimal' },
     body: JSON.stringify(data)
+  });
   })
   .then(function(r) {
     if (!r.ok) { return r.text().then(function(t) { throw new Error(t); }); }
@@ -615,6 +686,7 @@ function handleSubmit() {
     document.getElementById('success-title').textContent = 'Check-in received' + (first ? ', ' + first : '') + '.';
     document.getElementById('view-form').style.display = 'none';
     document.getElementById('view-success').style.display = 'block';
+    showPhotoStatus('Send them on WhatsApp instead.');
   })
   .catch(function(e) { btn.disabled = false; btn.textContent = 'Submit Check-In'; alert('Error: ' + e.message); });
 }
@@ -625,6 +697,7 @@ function resetForm() {
   document.getElementById('submit-btn').disabled = false;
   document.getElementById('submit-btn').textContent = 'Submit Check-In';
   scales = {};
+  clearPhotos();
   initAll();
   document.getElementById('view-success').style.display = 'none';
   document.getElementById('view-form').style.display = 'block';
@@ -652,7 +725,179 @@ function fmtDate(iso, long) {
 }
 
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ---------- Progress photos ----------
+var BUCKET = 'progress-photos';
+var PHOTO_KEYS = ['front', 'back', 'side'];
+var photoFiles = { front: null, back: null, side: null };
+var lastPhotoUpload = null;
+
+function initPhotoInputs() {
+  PHOTO_KEYS.forEach(function(k) {
+    var inp = document.getElementById('ph-' + k);
+    if (!inp || inp.dataset.bound) return;
+    inp.dataset.bound = '1';
+    inp.addEventListener('change', function() {
+      var f = inp.files && inp.files[0];
+      if (!f) return;
+      compressImage(f).then(function(blob) {
+        photoFiles[k] = blob;
+        document.getElementById('pv-' + k).src = URL.createObjectURL(blob);
+        document.getElementById('pc-' + k).classList.add('has');
+      }).catch(function() {
+        photoFiles[k] = null;
+        inp.value = '';
+        alert('This photo could not be read. Try another one, or send it on WhatsApp instead.');
+      });
+    });
+  });
+}
+
+function removePhoto(k, ev) {
+  if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+  photoFiles[k] = null;
+  var inp = document.getElementById('ph-' + k);
+  if (inp) inp.value = '';
+  var pv = document.getElementById('pv-' + k);
+  if (pv) pv.removeAttribute('src');
+  var pc = document.getElementById('pc-' + k);
+  if (pc) pc.classList.remove('has');
+}
+
+function clearPhotos() {
+  PHOTO_KEYS.forEach(function(k) { removePhoto(k); });
+  lastPhotoUpload = null;
+}
+
+function photoCount() {
+  return PHOTO_KEYS.filter(function(k) { return photoFiles[k]; }).length;
+}
+
+// Resize to 1600 px max and re-encode as JPEG. This also strips location data from the file.
+function compressImage(file) {
+  return new Promise(function(resolve, reject) {
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function() {
+      var max = 1600, w = img.naturalWidth, h = img.naturalHeight;
+      var scale = Math.min(1, max / Math.max(w, h));
+      var c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(w * scale));
+      c.height = Math.max(1, Math.round(h * scale));
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      c.toBlob(function(b) { if (b) resolve(b); else reject(new Error('encode')); }, 'image/jpeg', 0.82);
+    };
+    img.onerror = function() { URL.revokeObjectURL(url); reject(new Error('decode')); };
+    img.src = url;
+  });
+}
+
+function newUploadId() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
+}
+
+function uploadPhotos(folder) {
+  var id = newUploadId();
+  var result = { paths: {}, uploaded: 0, failed: 0, attempted: 0 };
+  var keys = PHOTO_KEYS.filter(function(k) { return photoFiles[k]; });
+  result.attempted = keys.length;
+  return Promise.all(keys.map(function(k) {
+    var path = folder + '/' + id + '/' + k + '.jpg';
+    return fetch(SUPABASE_URL + '/storage/v1/object/' + BUCKET + '/' + path, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'image/jpeg', 'x-upsert': 'false' },
+      body: photoFiles[k]
+    })
+    .then(function(res) { if (res.ok) { result.paths[k] = path; result.uploaded++; } else { result.failed++; } })
+    .catch(function() { result.failed++; });
+  })).then(function() { return result; });
+}
+
+function applyPhotoPaths(data, up) {
+  lastPhotoUpload = up;
+  data.photo_front = up.paths.front || null;
+  data.photo_back = up.paths.back || null;
+  data.photo_side = up.paths.side || null;
+}
+
+function showPhotoStatus(fallbackMsg) {
+  var el = document.getElementById('photo-status');
+  var prep = document.getElementById('photo-prep');
+  var up = lastPhotoUpload;
+  if (!el) return;
+  if (up && up.uploaded && !up.failed) {
+    el.textContent = up.uploaded === 3 ? 'Your 3 photos are saved privately.' : 'Your photos are saved privately.';
+    el.style.display = 'block';
+    if (prep && up.uploaded === 3) prep.style.display = 'none';
+  } else if (up && up.failed) {
+    el.textContent = 'Some photos did not upload. ' + fallbackMsg;
+    el.style.display = 'block';
+    if (prep) prep.style.display = '';
+  } else {
+    el.style.display = 'none';
+    if (prep) prep.style.display = '';
+  }
+}
+
+function signPhoto(path) {
+  return fetch(SUPABASE_URL + '/storage/v1/object/sign/' + BUCKET + '/' + path, {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ expiresIn: 3600 })
+  })
+  .then(function(r) { return r.ok ? r.json() : null; })
+  .then(function(j) {
+    var u = j && (j.signedURL || j.signedUrl);
+    return u ? SUPABASE_URL + '/storage/v1' + u : null;
+  })
+  .catch(function() { return null; });
+}
+
+function renderPhotos(s) {
+  var keys = [['photo_front', 'Front'], ['photo_back', 'Back'], ['photo_side', 'Side']].filter(function(p) { return s[p[0]]; });
+  if (!keys.length) return;
+  var wrap = document.createElement('div');
+  wrap.innerHTML = '<div class="detail-sec-title">Progress photos</div><div class="ph-grid">' +
+    keys.map(function(p) { return '<a class="ph-thumb" id="th-' + p[0] + '" target="_blank" rel="noopener"><span>' + p[1] + '</span></a>'; }).join('') +
+    '</div>';
+  var anchor = document.querySelector('#detail-content .contact-box') || document.querySelector('#detail-content .detail-meta');
+  if (anchor) anchor.insertAdjacentElement('afterend', wrap); else document.getElementById('detail-content').appendChild(wrap);
+  keys.forEach(function(p) {
+    signPhoto(s[p[0]]).then(function(u) {
+      var a = document.getElementById('th-' + p[0]);
+      if (!u || !a) return;
+      a.href = u;
+      a.style.backgroundImage = 'url("' + u + '")';
+    });
+  });
+}
+
+function deleteWithPhotos(id, rec) {
+  var paths = ['photo_front', 'photo_back', 'photo_side'].map(function(k) { return rec && rec[k]; }).filter(Boolean);
+  var step = paths.length
+    ? fetch(SUPABASE_URL + '/storage/v1/object/' + BUCKET, {
+        method: 'DELETE',
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prefixes: paths })
+      }).catch(function() {})
+    : Promise.resolve();
+  step.then(function() { deleteRecord(id); });
+}
+
+window.addEventListener('DOMContentLoaded', initPhotoInputs);
+
 window.addEventListener('DOMContentLoaded', initAll);
+
+window.addEventListener('DOMContentLoaded', function() {
+  try { accessToken = sessionStorage.getItem('ze_coach_token'); } catch (e) { accessToken = null; }
+  if (accessToken) dashUnlocked = true;
+  if (location.hash === '#coach') showView('dashboard');
+});
+window.addEventListener('hashchange', function() {
+  if (location.hash === '#coach') showView('dashboard');
+});
 </script>
 </body>
 </html>
