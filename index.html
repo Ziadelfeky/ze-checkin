@@ -6,22 +6,22 @@
 <meta property="og:title" content="Monthly Check-In — Ziad Elfeky Online Coaching"/>
 <meta property="og:description" content="Your monthly progress check-in. Takes 2 minutes. Be honest."/>
 <meta name="description" content="Your monthly progress check-in. Takes 2 minutes. Be honest."/>
-<meta name="theme-color" content="#111111"/>
+<meta name="theme-color" content="#0f0e0c"/>
 <title>Monthly Check-In — Ziad Elfeky</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --ink:#111111;--mid:#555555;--soft:#999999;--rule:#e2dfd9;
-  --bg:#f6f4f0;--white:#ffffff;--gold:#b8966a;--gold-dark:#9a7c52;
-  --gold-faint:#faf6f0;--red:#c0392b;--red-bg:#fdf0f0;--red-border:#f5c6c6;
-  --green:#2d6a4f;--green-bg:#f0faf5;
+  --ink:#f1ece2;--mid:#a39d91;--soft:#7d776d;--rule:rgba(241,236,226,.12);
+  --bg:#0f0e0c;--white:#181613;--gold:#c9a96e;--gold-dark:#dcc08e;
+  --gold-faint:#211c15;--red:#e58a7a;--red-bg:#2a1713;--red-border:#5c2c24;
+  --green:#86cfa6;--green-bg:#14251c;
 }
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh;}
-input,select,textarea,button{font-family:'DM Sans',sans-serif;touch-action:manipulation;}
+body{font-family:'Poppins',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh;}
+input,select,textarea,button{font-family:'Poppins',system-ui,-apple-system,sans-serif;touch-action:manipulation;}
 .hdr{background:var(--ink);color:#fff;padding:36px 24px 30px;}
 .hdr-eye{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
-.hdr h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,40px);font-weight:400;line-height:1.1;margin-top:6px;}
+.hdr h1{font-family:'Lora',Georgia,serif;font-size:clamp(26px,5vw,40px);font-weight:400;line-height:1.1;margin-top:6px;}
 .hdr-sub{font-size:13px;color:rgba(255,255,255,.35);font-style:italic;margin-top:5px;}
 .hdr-desc{font-size:13px;color:rgba(255,255,255,.42);margin-top:14px;max-width:520px;line-height:1.7;border-top:1px solid rgba(255,255,255,.08);padding-top:14px;}
 .nav{background:var(--white);border-bottom:1px solid var(--rule);padding:0 24px;}
@@ -33,7 +33,7 @@ input,select,textarea,button{font-family:'DM Sans',sans-serif;touch-action:manip
 .sec{margin-bottom:44px;}
 .sec-hdr{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--rule);padding-bottom:11px;margin-bottom:22px;}
 .sec-num{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;}
-.sec-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;}
+.sec-title{font-family:'Lora',Georgia,serif;font-size:20px;font-weight:400;}
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .lbl{font-size:13px;font-weight:600;color:var(--ink);}
@@ -74,17 +74,17 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .err-banner{font-size:13px;color:var(--red);background:var(--red-bg);border:1px solid var(--red-border);border-radius:7px;padding:10px 16px;text-align:center;width:100%;}
 .success-wrap{max-width:500px;margin:60px auto;padding:0 24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:22px;}
 .success-icon{width:64px;height:64px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;}
-.success-title{font-family:'DM Serif Display',serif;font-size:28px;font-weight:400;}
+.success-title{font-family:'Lora',Georgia,serif;font-size:28px;font-weight:400;}
 .success-body{font-size:14px;color:var(--mid);line-height:1.7;}
 .next-steps{background:var(--gold-faint);border:1px solid var(--rule);border-radius:10px;padding:18px 20px;width:100%;text-align:left;}
 .next-tag{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
 .next-item{display:flex;gap:10px;font-size:13px;color:var(--mid);margin-bottom:8px;}
 .next-num{color:var(--gold);font-weight:700;flex-shrink:0;}
 .pin-wrap{max-width:360px;margin:60px auto;padding:0 24px;display:flex;flex-direction:column;gap:18px;align-items:center;}
-.pin-title{font-family:'DM Serif Display',serif;font-size:24px;text-align:center;}
+.pin-title{font-family:'Lora',Georgia,serif;font-size:24px;text-align:center;}
 .pin-sub{font-size:13px;color:var(--mid);text-align:center;}
 .dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
-.dash-title{font-family:'DM Serif Display',serif;font-size:24px;}
+.dash-title{font-family:'Lora',Georgia,serif;font-size:24px;}
 .dash-count{font-size:13px;color:var(--soft);margin-top:3px;}
 .btn-sm{background:none;border:1px solid var(--rule);border-radius:6px;padding:8px 14px;font-size:12px;color:var(--mid);cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .btn-danger{border-color:var(--red-border);color:var(--red);}
@@ -96,7 +96,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .client-meta{font-size:12px;color:var(--soft);margin-top:2px;}
 .client-date{font-size:11px;color:var(--soft);flex-shrink:0;text-align:right;}
 .back-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:10px;}
-.detail-name{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:4px;}
+.detail-name{font-family:'Lora',Georgia,serif;font-size:26px;margin-bottom:4px;}
 .detail-meta{font-size:12px;color:var(--soft);margin-bottom:24px;}
 .detail-sec-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;margin-top:24px;}
 .detail-row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule);flex-wrap:wrap;}
@@ -124,6 +124,22 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .client-card.unread .client-name::after{content:'New';display:inline-block;margin-left:8px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--gold);padding:2px 7px;border-radius:10px;vertical-align:2px;}
 .unread-count{color:var(--gold-dark);font-weight:600;}
 .detail-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ---- Dark brand layer ---- */
+:root{color-scheme:dark;}
+body{font-weight:300;-webkit-font-smoothing:antialiased;}
+input,select,textarea{color:var(--ink);}
+input::placeholder,textarea::placeholder{color:#6b665d;}
+.hdr,.hero{background:var(--bg) !important;color:var(--ink) !important;border-bottom:1px solid var(--rule);}
+.footer{background:var(--bg) !important;border-top:1px solid var(--rule);color:var(--soft) !important;}
+.btn-primary,.apply{background:var(--gold) !important;color:#15120e !important;font-weight:500 !important;}
+.btn-primary:disabled{background:#4a453d !important;color:#9a948a !important;}
+.apply:hover{filter:brightness(1.08);}
+.scale-btn.on,.rating-btn.on,.score-badge{background:var(--gold) !important;color:#15120e !important;border-color:var(--gold) !important;}
+.client-card.unread .client-name::after{color:#15120e !important;}
+.cat-icon{background:var(--white) !important;border:1px solid var(--rule);}
+.nav{border-bottom-color:var(--rule) !important;}
+.lbl,.cert-name{font-weight:500 !important;}
 </style>
 </head>
 <body>
@@ -344,7 +360,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <!-- SUCCESS -->
 <div id="view-success" style="display:none">
   <div class="success-wrap">
-    <div class="success-icon"><svg width="28" height="28" fill="none" stroke="#2d6a4f" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="success-icon"><svg width="28" height="28" fill="none" stroke="#86cfa6" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="success-title" id="success-title">Check-in received.</div>
     <div class="success-body">Your monthly check-in has been logged. Your next program block will reflect everything you've shared.</div>
     <div class="photo-status" id="photo-status" style="display:none"></div>
